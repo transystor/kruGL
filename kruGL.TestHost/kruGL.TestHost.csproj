@@ -13,4 +13,16 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <Target Name="CopyLocalGlfwNativeDll" AfterTargets="Build">
+    <PropertyGroup>
+      <GlfwNativeSource>$(MSBuildThisFileDirectory)..\native\windows\x64\glfw.dll</GlfwNativeSource>
+      <GlfwNativeTarget>$(OutDir)glfw.dll</GlfwNativeTarget>
+    </PropertyGroup>
+
+    <Copy SourceFiles="$(GlfwNativeSource)"
+          DestinationFiles="$(GlfwNativeTarget)"
+          SkipUnchangedFiles="true"
+          Condition="Exists('$(GlfwNativeSource)')" />
+  </Target>
+
 </Project>
