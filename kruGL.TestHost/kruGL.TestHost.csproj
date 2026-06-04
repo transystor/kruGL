@@ -3,6 +3,7 @@
   <ItemGroup>
     <ProjectReference Include="..\kruGL.OpenGL\kruGL.OpenGL.csproj" />
     <ProjectReference Include="..\kruGL.Platform\kruGL.Platform.csproj" />
+    <ProjectReference Include="..\kruGL.Platform.Glfw\kruGL.Platform.Glfw.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

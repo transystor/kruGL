@@ -3,6 +3,11 @@
   <ItemGroup>
     <ProjectReference Include="..\kruGL.Native\kruGL.Native.csproj" />
     <ProjectReference Include="..\kruGL.OpenGL\kruGL.OpenGL.csproj" />
+    <ProjectReference Include="..\kruGL.Platform\kruGL.Platform.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Silk.NET.Windowing" Version="2.22.0" />
   </ItemGroup>
 
   <PropertyGroup>

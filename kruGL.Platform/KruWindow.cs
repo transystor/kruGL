@@ -1,24 +1,17 @@
-using Silk.NET.Maths;
-using Silk.NET.Windowing;
-using kruGL.Native;
 using kruGL.OpenGL;
 
 namespace kruGL.Platform;
 
 public sealed class KruWindow : IDisposable
 {
-    private readonly IWindow _window;
+    private readonly IWindowBackend _backend;
 
-    public KruWindow(WindowSettings settings)
+    public KruWindow(WindowSettings settings, Func<WindowSettings, IWindowBackend> backendFactory)
     {
-        var options = WindowOptions.Default;
-        options.Title = settings.Title;
-        options.Size = new Vector2D<int>(settings.Width, settings.Height);
-
-        _window = Window.Create(options);
-        _window.Load += OnLoad;
-        _window.Resize += OnResize;
-        _window.Render += OnRender;
+        _backend = backendFactory(settings);
+        _backend.Load += OnLoad;
+        _backend.Resize += OnResize;
+        _backend.Render += OnRender;
     }
 
     public GlApi? Gl { get; private set; }
@@ -27,47 +20,25 @@ public sealed class KruWindow : IDisposable
     public event Action<int, int>? Resize;
     public event Action<double>? Render;
 
-    public void Run() => _window.Run();
+    public void Run() => _backend.Run();
 
-    public void Dispose() => _window.Dispose();
+    public void Dispose() => _backend.Dispose();
 
     private void OnLoad()
     {
-        Gl = new GlApi(new SilkWindowFunctionLoader(_window));
-
-        var size = _window.Size;
-        Gl.Viewport(0, 0, size.X, size.Y);
+        Gl = _backend.CreateGlApi();
+        Gl.Viewport(0, 0, _backend.Width, _backend.Height);
         Load?.Invoke();
     }
 
-    private void OnResize(Vector2D<int> size)
+    private void OnResize(int width, int height)
     {
-        Gl?.Viewport(0, 0, size.X, size.Y);
-        Resize?.Invoke(size.X, size.Y);
+        Gl?.Viewport(0, 0, width, height);
+        Resize?.Invoke(width, height);
     }
 
     private void OnRender(double deltaTime)
     {
         Render?.Invoke(deltaTime);
-    }
-
-    private sealed class SilkWindowFunctionLoader : INativeFunctionLoader
-    {
-        private readonly IWindow _window;
-
-        public SilkWindowFunctionLoader(IWindow window)
-        {
-            _window = window;
-        }
-
-        public nint LoadFunctionPointer(string functionName)
-        {
-            if (_window.GLContext is null || !_window.GLContext.TryGetProcAddress(functionName, out var address) || address == nint.Zero)
-            {
-                throw new NativeFunctionNotFoundException(functionName);
-            }
-
-            return address;
-        }
     }
 }

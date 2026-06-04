@@ -1,12 +1,15 @@
 using kruGL.OpenGL;
 using kruGL.Platform;
+using kruGL.Platform.Glfw;
 
-using var window = new KruWindow(new WindowSettings
-{
-    Title = "kruGL TestHost",
-    Width = 960,
-    Height = 540
-});
+using var window = new KruWindow(
+    new WindowSettings
+    {
+        Title = "kruGL TestHost",
+        Width = 960,
+        Height = 540
+    },
+    settings => new GlfwWindowBackend(settings));
 
 window.Render += _ =>
 {

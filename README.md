@@ -15,7 +15,8 @@
 - `kruGL.Core` — общие utility/helper pieces
 - `kruGL.Native` — загрузка native function pointers
 - `kruGL.OpenGL` — low-level OpenGL API surface
-- `kruGL.Platform` — окно, GL context, proc address bootstrap
+- `kruGL.Platform` — platform abstractions
+- `kruGL.Platform.Glfw` — текущая backend-реализация окна и context bootstrap
 
 ## Текущий статус
 
@@ -35,11 +36,13 @@
 
 ## Smoke test
 
-Добавлен `kruGL.TestHost`, который теперь использует уже внутренний platform/window/context слой самой библиотеки. Первый целевой smoke-test, это успешный `Clear()` окна.
+Добавлен `kruGL.TestHost`, который использует общий platform API библиотеки и текущий backend `kruGL.Platform.Glfw`. Первый целевой smoke-test, это успешный `Clear()` окна.
 
-Сейчас `kruGL` умеет не только low-level GL вызовы, но и:
+Сейчас `kruGL` умеет не только low-level GL вызовы, но и через backend-слой:
 - создать окно
 - поднять GL context
 - достать адреса GL-функций из context
+
+При этом GLFW-специфика теперь вынесена из общего platform API, чтобы позже можно было допилить и подставить альтернативный backend без ломки верхнего слоя.
 
 В headless Linux окружении без доступной desktop platform/graphics session запуск окна может падать на инициализации GLFW. Сборка smoke-test host при этом проходит, а реальный runtime smoke-test нужно прогонять в desktop окружении.
