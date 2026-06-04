@@ -3,12 +3,14 @@
   <ItemGroup>
     <ProjectReference Include="..\kruGL.Abstractions\kruGL.Abstractions.csproj" />
     <ProjectReference Include="..\kruGL.Core\kruGL.Core.csproj" />
+    <ProjectReference Include="..\kruGL.Native\kruGL.Native.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
 </Project>

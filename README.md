@@ -17,4 +17,16 @@
 
 ## Текущий статус
 
-Это bootstrap-каркас. Реальный binding/context слой и первые draw-paths будут добавляться следующими шагами.
+Сейчас это уже не просто пустой bootstrap: добавлен `kruGL.Native` с native function loader abstraction и заложен v0 API surface для low-level OpenGL wrapper в `kruGL.OpenGL`.
+
+## V0 surface
+
+Первая версия целится в минимальный набор, достаточный для:
+
+- `ClearColor`
+- `Clear`
+- `Viewport`
+- buffers
+- vertex arrays
+- shaders / programs
+- `DrawArrays`
