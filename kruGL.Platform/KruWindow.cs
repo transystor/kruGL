@@ -5,20 +5,20 @@ namespace kruGL.Platform;
 /// <summary>
 /// Высокоуровневая оконная обёртка библиотеки.
 ///
-/// Это façade над конкретным backend-ом. Снаружи потребитель работает с единым API,
+/// Это façade над конкретной платформенной реализацией. Снаружи потребитель работает с единым API,
 /// а внутри можно подменять реализацию окна и context bootstrap-а.
 /// Именно этот слой должен остаться стабильным, если позже GLFW будет заменён.
 /// </summary>
 public sealed class KruWindow : IDisposable
 {
-    private readonly IWindowBackend _backend;
+    private readonly IWindowPlatform _platform;
 
-    public KruWindow(WindowSettings settings, Func<WindowSettings, IWindowBackend> backendFactory)
+    public KruWindow(WindowSettings settings, Func<WindowSettings, IWindowPlatform> platformFactory)
     {
-        _backend = backendFactory(settings);
-        _backend.Load += OnLoad;
-        _backend.Resize += OnResize;
-        _backend.Render += OnRender;
+        _platform = platformFactory(settings);
+        _platform.Load += OnLoad;
+        _platform.Resize += OnResize;
+        _platform.Render += OnRender;
     }
 
     public GlApi? Gl { get; private set; }
@@ -27,14 +27,14 @@ public sealed class KruWindow : IDisposable
     public event Action<int, int>? Resize;
     public event Action<double>? Render;
 
-    public void Run() => _backend.Run();
+    public void Run() => _platform.Run();
 
-    public void Dispose() => _backend.Dispose();
+    public void Dispose() => _platform.Dispose();
 
     private void OnLoad()
     {
-        Gl = _backend.CreateGlApi();
-        Gl.Viewport(0, 0, _backend.Width, _backend.Height);
+        Gl = _platform.CreateGlApi();
+        Gl.Viewport(0, 0, _platform.Width, _platform.Height);
         Load?.Invoke();
     }
 

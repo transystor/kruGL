@@ -13,7 +13,7 @@ using var window = new KruWindow(
         Width = 960,
         Height = 540
     },
-    settings => new GlfwWindowBackend(settings));
+    settings => new GlfwWindowPlatform(settings));
 
 GlProgramHandle shaderProgram = default;
 GlBufferHandle vertexBuffer = default;

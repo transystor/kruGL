@@ -16,7 +16,7 @@
 - `kruGL.Native` — загрузка native function pointers
 - `kruGL.OpenGL` — low-level OpenGL API surface
 - `kruGL.Platform` — platform abstractions
-- `kruGL.Platform.Glfw` — текущая backend-реализация окна и context bootstrap через прямой GLFW .NET binding
+- `kruGL.Platform.Glfw` — текущая platform-реализация окна и context bootstrap через прямой GLFW .NET binding
 
 ## Текущий статус
 
@@ -39,15 +39,15 @@
 
 ## Smoke test
 
-Добавлен `kruGL.TestHost`, который использует общий platform API библиотеки и текущий backend `kruGL.Platform.Glfw`. Он уже умеет не только `Clear()`, но и первый минимальный triangle render path через shader + buffer + vertex array.
+Добавлен `kruGL.TestHost`, который использует общий platform API библиотеки и текущую platform-реализацию `kruGL.Platform.Glfw`. Он уже умеет не только `Clear()`, но и первый минимальный triangle render path через shader + buffer + vertex array.
 
-Сейчас `kruGL` умеет не только low-level GL вызовы, но и через backend-слой:
+Сейчас `kruGL` умеет не только low-level GL вызовы, но и через platform-слой:
 - создать окно
 - поднять GL context
 - достать адреса GL-функций из context
 
-При этом GLFW-специфика теперь вынесена из общего platform API, чтобы позже можно было допилить и подставить альтернативный backend без ломки верхнего слоя.
+При этом GLFW-специфика теперь вынесена из общего platform API, чтобы позже можно было допилить и подставить альтернативную platform-реализацию без ломки верхнего слоя.
 
-Silk.NET из текущего backend слоя убран.
+Silk.NET из текущего platform-слоя убран.
 
 В headless Linux окружении без доступной desktop platform/graphics session запуск окна может падать на инициализации GLFW. Сборка smoke-test host при этом проходит, а реальный runtime smoke-test нужно прогонять в desktop окружении.

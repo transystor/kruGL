@@ -4,7 +4,7 @@ namespace kruGL.Abstractions;
 /// Простейшее представление цвета в формате RGBA.
 ///
 /// Это базовый value-type для мест, где нужен цвет без привязки
-/// к конкретному graphics backend-у или формату текстуры.
+/// к конкретной graphics-реализации или формату текстуры.
 /// </summary>
 public readonly record struct ColorRgba(byte R, byte G, byte B, byte A = 255)
 {
