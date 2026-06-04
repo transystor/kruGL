@@ -32,6 +32,21 @@ artifacts/packages/
 nuget.config.example
 ```
 
+Для публикации добавлен GitHub Actions workflow:
+
+```text
+.github/workflows/publish-packages.yml
+```
+
+Он умеет:
+- собирать release-версии проектов
+- упаковывать NuGet packages
+- пушить их в GitHub Packages
+
+Запуск:
+- вручную через `workflow_dispatch`
+- или через git tag вида `v*`
+
 ## Принципы
 
 - не покрывать весь OpenGL API подряд

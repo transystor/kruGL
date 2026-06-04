@@ -1,0 +1,44 @@
+name: Publish NuGet Packages
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore
+        run: dotnet restore kruGL.sln
+
+      - name: Build Release
+        run: dotnet build kruGL.sln -c Release --no-restore
+
+      - name: Pack kruGL.Native
+        run: dotnet pack kruGL.Native/kruGL.Native.csproj -c Release --no-build
+
+      - name: Pack kruGL.OpenGL
+        run: dotnet pack kruGL.OpenGL/kruGL.OpenGL.csproj -c Release --no-build
+
+      - name: Pack kruGL.Platform
+        run: dotnet pack kruGL.Platform/kruGL.Platform.csproj -c Release --no-build
+
+      - name: Pack kruGL.Platform.Glfw
+        run: dotnet pack kruGL.Platform.Glfw/kruGL.Platform.Glfw.csproj -c Release --no-build
+
+      - name: Push packages to GitHub Packages
+        run: dotnet nuget push "artifacts/packages/*.nupkg" --source "https://nuget.pkg.github.com/transystor/index.json" --api-key ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
