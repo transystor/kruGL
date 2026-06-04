@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="GLFW-Net" Version="3.3.1" />
+    <PackageReference Include="GLFW" Version="3.4.0" />
   </ItemGroup>
 
   <PropertyGroup>
@@ -15,5 +16,17 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+
+  <Target Name="CopyGlfwNativeDll" AfterTargets="Build">
+    <PropertyGroup>
+      <GlfwNativeSource>$(NuGetPackageRoot)glfw/3.4.0/build/native/bin/dynamic/v143/x64/glfw3.dll</GlfwNativeSource>
+      <GlfwNativeTarget>$(OutDir)glfw.dll</GlfwNativeTarget>
+    </PropertyGroup>
+
+    <Copy SourceFiles="$(GlfwNativeSource)"
+          DestinationFiles="$(GlfwNativeTarget)"
+          SkipUnchangedFiles="true"
+          Condition="Exists('$(GlfwNativeSource)')" />
+  </Target>
 
 </Project>

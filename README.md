@@ -18,6 +18,8 @@
 - `kruGL.Platform` — platform abstractions
 - `kruGL.Platform.Glfw` — текущая platform-реализация окна и context bootstrap через прямой GLFW .NET binding
 
+Для Windows сборок project дополнительно копирует native `glfw3.dll` в output под именем `glfw.dll`, потому что `GLFW-Net` ожидает именно такое имя native-библиотеки.
+
 ## Текущий статус
 
 Сейчас это уже не просто пустой bootstrap: добавлен `kruGL.Native` с native function loader abstraction и заложен v0 API surface для low-level OpenGL wrapper в `kruGL.OpenGL`.
