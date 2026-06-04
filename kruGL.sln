@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "kruGL.Native", "kruGL.Nativ
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "kruGL.TestHost", "kruGL.TestHost\kruGL.TestHost.csproj", "{F2819487-8C32-45DF-BC0B-32855335A26C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "kruGL.Platform", "kruGL.Platform\kruGL.Platform.csproj", "{AE2AEF2C-5B58-47ED-A412-B6AEF91D9714}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +44,9 @@ Global
 		{F2819487-8C32-45DF-BC0B-32855335A26C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F2819487-8C32-45DF-BC0B-32855335A26C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F2819487-8C32-45DF-BC0B-32855335A26C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE2AEF2C-5B58-47ED-A412-B6AEF91D9714}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE2AEF2C-5B58-47ED-A412-B6AEF91D9714}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE2AEF2C-5B58-47ED-A412-B6AEF91D9714}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE2AEF2C-5B58-47ED-A412-B6AEF91D9714}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

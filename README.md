@@ -13,7 +13,9 @@
 
 - `kruGL.Abstractions` — базовые интерфейсы и типы
 - `kruGL.Core` — общие utility/helper pieces
-- `kruGL.OpenGL` — OpenGL-специфичные реализации
+- `kruGL.Native` — загрузка native function pointers
+- `kruGL.OpenGL` — low-level OpenGL API surface
+- `kruGL.Platform` — окно, GL context, proc address bootstrap
 
 ## Текущий статус
 
@@ -33,6 +35,11 @@
 
 ## Smoke test
 
-Добавлен `kruGL.TestHost` на Silk.NET window/context layer, чтобы проверять реальные вызовы `kruGL` против живого OpenGL context. Первый целевой smoke-test, это успешный `Clear()` окна.
+Добавлен `kruGL.TestHost`, который теперь использует уже внутренний platform/window/context слой самой библиотеки. Первый целевой smoke-test, это успешный `Clear()` окна.
+
+Сейчас `kruGL` умеет не только low-level GL вызовы, но и:
+- создать окно
+- поднять GL context
+- достать адреса GL-функций из context
 
 В headless Linux окружении без доступной desktop platform/graphics session запуск окна может падать на инициализации GLFW. Сборка smoke-test host при этом проходит, а реальный runtime smoke-test нужно прогонять в desktop окружении.
