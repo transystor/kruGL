@@ -6,3 +6,4 @@ obj/
 *.cache
 *.pdb
 *.nupkg
+/native/windows/x64/glfw.dll
