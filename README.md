@@ -39,7 +39,7 @@
 
 ## Smoke test
 
-Добавлен `kruGL.TestHost`, который использует общий platform API библиотеки и текущий backend `kruGL.Platform.Glfw`. Первый целевой smoke-test, это успешный `Clear()` окна.
+Добавлен `kruGL.TestHost`, который использует общий platform API библиотеки и текущий backend `kruGL.Platform.Glfw`. Он уже умеет не только `Clear()`, но и первый минимальный triangle render path через shader + buffer + vertex array.
 
 Сейчас `kruGL` умеет не только low-level GL вызовы, но и через backend-слой:
 - создать окно
