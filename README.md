@@ -30,3 +30,9 @@
 - vertex arrays
 - shaders / programs
 - `DrawArrays`
+
+## Smoke test
+
+Добавлен `kruGL.TestHost` на Silk.NET window/context layer, чтобы проверять реальные вызовы `kruGL` против живого OpenGL context. Первый целевой smoke-test, это успешный `Clear()` окна.
+
+В headless Linux окружении без доступной desktop platform/graphics session запуск окна может падать на инициализации GLFW. Сборка smoke-test host при этом проходит, а реальный runtime smoke-test нужно прогонять в desktop окружении.
