@@ -28,6 +28,12 @@ jobs:
       - name: Build Release
         run: dotnet build kruGL.sln -c Release --no-restore
 
+      - name: Pack kruGL.Abstractions
+        run: dotnet pack kruGL.Abstractions/kruGL.Abstractions.csproj -c Release --no-build
+
+      - name: Pack kruGL.Core
+        run: dotnet pack kruGL.Core/kruGL.Core.csproj -c Release --no-build
+
       - name: Pack kruGL.Native
         run: dotnet pack kruGL.Native/kruGL.Native.csproj -c Release --no-build
 

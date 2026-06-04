@@ -6,6 +6,8 @@
 
 Проекты подготовлены к упаковке как отдельные пакеты, в первую очередь для GitHub Packages:
 
+- `kruGL.Abstractions`
+- `kruGL.Core`
 - `kruGL.Native`
 - `kruGL.OpenGL`
 - `kruGL.Platform`
@@ -14,6 +16,8 @@
 Локальная упаковка:
 
 ```bash
+dotnet pack kruGL.Abstractions/kruGL.Abstractions.csproj -c Release
+dotnet pack kruGL.Core/kruGL.Core.csproj -c Release
 dotnet pack kruGL.Native/kruGL.Native.csproj -c Release
 dotnet pack kruGL.OpenGL/kruGL.OpenGL.csproj -c Release
 dotnet pack kruGL.Platform/kruGL.Platform.csproj -c Release
