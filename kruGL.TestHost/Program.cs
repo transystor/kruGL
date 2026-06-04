@@ -1,3 +1,7 @@
+// Этот проект, это минимальный smoke/integration test для библиотеки.
+// Его задача не быть движком или игрой, а доказать, что связка
+// window -> GL context -> shader -> buffer -> draw path реально работает.
+
 using kruGL.OpenGL;
 using kruGL.Platform;
 using kruGL.Platform.Glfw;

@@ -4,6 +4,16 @@ using kruGL.Native;
 
 namespace kruGL.OpenGL;
 
+/// <summary>
+/// Главная низкоуровневая точка входа в OpenGL внутри библиотеки.
+///
+/// Этот класс не создаёт окно и не поднимает context сам по себе.
+/// Он предполагает, что снаружи уже есть активный GL context и механизм,
+/// который умеет отдавать адреса native GL-функций.
+///
+/// Задача <see cref="GlApi"/>, это собрать эти адреса в типизированный C# API:
+/// buffers, shaders, programs, vertex arrays, viewport, clear и draw calls.
+/// </summary>
 public sealed class GlApi
 {
     private readonly GlGenBuffersDelegate _genBuffers;

@@ -2,6 +2,13 @@ using kruGL.OpenGL;
 
 namespace kruGL.Platform;
 
+/// <summary>
+/// Высокоуровневая оконная обёртка библиотеки.
+///
+/// Это façade над конкретным backend-ом. Снаружи потребитель работает с единым API,
+/// а внутри можно подменять реализацию окна и context bootstrap-а.
+/// Именно этот слой должен остаться стабильным, если позже GLFW будет заменён.
+/// </summary>
 public sealed class KruWindow : IDisposable
 {
     private readonly IWindowBackend _backend;

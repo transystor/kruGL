@@ -2,6 +2,11 @@ using System.Runtime.InteropServices;
 
 namespace kruGL.Native;
 
+/// <summary>
+/// Простейший loader для случая, когда функции можно получить напрямую из native-библиотеки.
+/// Это низкоуровневый utility-слой, полезный для платформенных экспериментов и вспомогательных сценариев.
+/// Для OpenGL через context обычно используется более специализированный loader.
+/// </summary>
 public sealed class NativeLibraryLoader : INativeFunctionLoader, IDisposable
 {
     private readonly nint _libraryHandle;

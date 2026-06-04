@@ -5,6 +5,13 @@ using kruGL.Platform;
 
 namespace kruGL.Platform.Glfw;
 
+/// <summary>
+/// Текущая backend-реализация окна и OpenGL context-а через GLFW.
+///
+/// Важно: это не "сердце" всей библиотеки, а только один из возможных platform backend-ов.
+/// За счёт <see cref="IWindowBackend"/> его потом можно будет заменить,
+/// не ломая верхний API и остальной код библиотеки.
+/// </summary>
 public sealed class GlfwWindowBackend : IWindowBackend
 {
     private readonly Window _window;
