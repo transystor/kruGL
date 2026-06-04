@@ -7,7 +7,9 @@ namespace kruGL.OpenGL;
 public sealed class GlApi
 {
     private readonly GlGenBuffersDelegate _genBuffers;
+    private readonly GlDeleteBuffersDelegate _deleteBuffers;
     private readonly GlGenVertexArraysDelegate _genVertexArrays;
+    private readonly GlDeleteVertexArraysDelegate _deleteVertexArrays;
     private readonly GlBindVertexArrayDelegate _bindVertexArray;
     private readonly GlBindBufferDelegate _bindBuffer;
     private readonly GlBufferDataDelegate _bufferData;
@@ -15,11 +17,17 @@ public sealed class GlApi
     private readonly GlClearDelegate _clear;
     private readonly GlViewportDelegate _viewport;
     private readonly GlCreateShaderDelegate _createShader;
+    private readonly GlDeleteShaderDelegate _deleteShader;
     private readonly GlShaderSourceDelegate _shaderSource;
     private readonly GlCompileShaderDelegate _compileShader;
+    private readonly GlGetShaderIvDelegate _getShaderIv;
+    private readonly GlGetShaderInfoLogDelegate _getShaderInfoLog;
     private readonly GlCreateProgramDelegate _createProgram;
+    private readonly GlDeleteProgramDelegate _deleteProgram;
     private readonly GlAttachShaderDelegate _attachShader;
     private readonly GlLinkProgramDelegate _linkProgram;
+    private readonly GlGetProgramIvDelegate _getProgramIv;
+    private readonly GlGetProgramInfoLogDelegate _getProgramInfoLog;
     private readonly GlUseProgramDelegate _useProgram;
     private readonly GlEnableVertexAttribArrayDelegate _enableVertexAttribArray;
     private readonly GlVertexAttribPointerDelegate _vertexAttribPointer;
@@ -28,7 +36,9 @@ public sealed class GlApi
     public GlApi(INativeFunctionLoader loader)
     {
         _genBuffers = loader.LoadDelegate<GlGenBuffersDelegate>("glGenBuffers");
+        _deleteBuffers = loader.LoadDelegate<GlDeleteBuffersDelegate>("glDeleteBuffers");
         _genVertexArrays = loader.LoadDelegate<GlGenVertexArraysDelegate>("glGenVertexArrays");
+        _deleteVertexArrays = loader.LoadDelegate<GlDeleteVertexArraysDelegate>("glDeleteVertexArrays");
         _bindVertexArray = loader.LoadDelegate<GlBindVertexArrayDelegate>("glBindVertexArray");
         _bindBuffer = loader.LoadDelegate<GlBindBufferDelegate>("glBindBuffer");
         _bufferData = loader.LoadDelegate<GlBufferDataDelegate>("glBufferData");
@@ -36,11 +46,17 @@ public sealed class GlApi
         _clear = loader.LoadDelegate<GlClearDelegate>("glClear");
         _viewport = loader.LoadDelegate<GlViewportDelegate>("glViewport");
         _createShader = loader.LoadDelegate<GlCreateShaderDelegate>("glCreateShader");
+        _deleteShader = loader.LoadDelegate<GlDeleteShaderDelegate>("glDeleteShader");
         _shaderSource = loader.LoadDelegate<GlShaderSourceDelegate>("glShaderSource");
         _compileShader = loader.LoadDelegate<GlCompileShaderDelegate>("glCompileShader");
+        _getShaderIv = loader.LoadDelegate<GlGetShaderIvDelegate>("glGetShaderiv");
+        _getShaderInfoLog = loader.LoadDelegate<GlGetShaderInfoLogDelegate>("glGetShaderInfoLog");
         _createProgram = loader.LoadDelegate<GlCreateProgramDelegate>("glCreateProgram");
+        _deleteProgram = loader.LoadDelegate<GlDeleteProgramDelegate>("glDeleteProgram");
         _attachShader = loader.LoadDelegate<GlAttachShaderDelegate>("glAttachShader");
         _linkProgram = loader.LoadDelegate<GlLinkProgramDelegate>("glLinkProgram");
+        _getProgramIv = loader.LoadDelegate<GlGetProgramIvDelegate>("glGetProgramiv");
+        _getProgramInfoLog = loader.LoadDelegate<GlGetProgramInfoLogDelegate>("glGetProgramInfoLog");
         _useProgram = loader.LoadDelegate<GlUseProgramDelegate>("glUseProgram");
         _enableVertexAttribArray = loader.LoadDelegate<GlEnableVertexAttribArrayDelegate>("glEnableVertexAttribArray");
         _vertexAttribPointer = loader.LoadDelegate<GlVertexAttribPointerDelegate>("glVertexAttribPointer");
@@ -60,11 +76,23 @@ public sealed class GlApi
         return new GlBufferHandle(handle);
     }
 
+    public void DeleteBuffer(GlBufferHandle handle)
+    {
+        var value = handle.Value;
+        _deleteBuffers(1, ref value);
+    }
+
     public GlVertexArrayHandle CreateVertexArray()
     {
         uint handle = 0;
         _genVertexArrays(1, ref handle);
         return new GlVertexArrayHandle(handle);
+    }
+
+    public void DeleteVertexArray(GlVertexArrayHandle handle)
+    {
+        var value = handle.Value;
+        _deleteVertexArrays(1, ref value);
     }
 
     public void BindVertexArray(GlVertexArrayHandle handle) => _bindVertexArray(handle.Value);
@@ -89,6 +117,8 @@ public sealed class GlApi
 
     public GlShaderHandle CreateShader(GlShaderType shaderType) => new(_createShader((uint)shaderType));
 
+    public void DeleteShader(GlShaderHandle shader) => _deleteShader(shader.Value);
+
     public void ShaderSource(GlShaderHandle shader, string source)
     {
         var sourceBytes = Encoding.UTF8.GetBytes(source + "\0");
@@ -110,11 +140,69 @@ public sealed class GlApi
 
     public void CompileShader(GlShaderHandle shader) => _compileShader(shader.Value);
 
+    public bool GetShaderCompileStatus(GlShaderHandle shader)
+    {
+        _getShaderIv(shader.Value, (uint)GlShaderParameterName.CompileStatus, out var value);
+        return value != 0;
+    }
+
+    public string GetShaderInfoLog(GlShaderHandle shader)
+    {
+        _getShaderIv(shader.Value, (uint)GlShaderParameterName.InfoLogLength, out var length);
+        if (length <= 1)
+        {
+            return string.Empty;
+        }
+
+        var buffer = new byte[length];
+        _getShaderInfoLog(shader.Value, length, out var written, buffer);
+        return Encoding.UTF8.GetString(buffer, 0, Math.Max(0, written)).TrimEnd('\0');
+    }
+
+    public void CompileShaderChecked(GlShaderHandle shader)
+    {
+        CompileShader(shader);
+        if (!GetShaderCompileStatus(shader))
+        {
+            throw new GlCompileException(GetShaderInfoLog(shader));
+        }
+    }
+
     public GlProgramHandle CreateProgram() => new(_createProgram());
+
+    public void DeleteProgram(GlProgramHandle program) => _deleteProgram(program.Value);
 
     public void AttachShader(GlProgramHandle program, GlShaderHandle shader) => _attachShader(program.Value, shader.Value);
 
     public void LinkProgram(GlProgramHandle program) => _linkProgram(program.Value);
+
+    public bool GetProgramLinkStatus(GlProgramHandle program)
+    {
+        _getProgramIv(program.Value, (uint)GlProgramParameterName.LinkStatus, out var value);
+        return value != 0;
+    }
+
+    public string GetProgramInfoLog(GlProgramHandle program)
+    {
+        _getProgramIv(program.Value, (uint)GlProgramParameterName.InfoLogLength, out var length);
+        if (length <= 1)
+        {
+            return string.Empty;
+        }
+
+        var buffer = new byte[length];
+        _getProgramInfoLog(program.Value, length, out var written, buffer);
+        return Encoding.UTF8.GetString(buffer, 0, Math.Max(0, written)).TrimEnd('\0');
+    }
+
+    public void LinkProgramChecked(GlProgramHandle program)
+    {
+        LinkProgram(program);
+        if (!GetProgramLinkStatus(program))
+        {
+            throw new GlLinkException(GetProgramInfoLog(program));
+        }
+    }
 
     public void UseProgram(GlProgramHandle program) => _useProgram(program.Value);
 
@@ -129,7 +217,13 @@ public sealed class GlApi
     private delegate void GlGenBuffersDelegate(uint count, ref uint buffers);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    private delegate void GlDeleteBuffersDelegate(uint count, ref uint buffers);
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void GlGenVertexArraysDelegate(uint count, ref uint arrays);
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    private delegate void GlDeleteVertexArraysDelegate(uint count, ref uint arrays);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void GlBindVertexArrayDelegate(uint array);
@@ -153,19 +247,37 @@ public sealed class GlApi
     private delegate uint GlCreateShaderDelegate(uint shaderType);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    private delegate void GlDeleteShaderDelegate(uint shader);
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void GlShaderSourceDelegate(uint shader, int count, nint strings, ref int length);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void GlCompileShaderDelegate(uint shader);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    private delegate void GlGetShaderIvDelegate(uint shader, uint parameterName, out int value);
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    private delegate void GlGetShaderInfoLogDelegate(uint shader, int maxLength, out int length, byte[] infoLog);
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate uint GlCreateProgramDelegate();
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    private delegate void GlDeleteProgramDelegate(uint program);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void GlAttachShaderDelegate(uint program, uint shader);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void GlLinkProgramDelegate(uint program);
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    private delegate void GlGetProgramIvDelegate(uint program, uint parameterName, out int value);
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    private delegate void GlGetProgramInfoLogDelegate(uint program, int maxLength, out int length, byte[] infoLog);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     private delegate void GlUseProgramDelegate(uint program);

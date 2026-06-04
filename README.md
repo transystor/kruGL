@@ -29,9 +29,12 @@
 - `ClearColor`
 - `Clear`
 - `Viewport`
-- buffers
-- vertex arrays
+- buffers + delete
+- vertex arrays + delete
 - shaders / programs
+- compile/link status
+- info logs
+- checked compile/link helpers
 - `DrawArrays`
 
 ## Smoke test
