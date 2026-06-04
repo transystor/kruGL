@@ -1,5 +1,9 @@
 namespace kruGL.OpenGL;
 
+/// <summary>
+/// Типы данных, которые OpenGL ожидает в buffer-ах и vertex attributes.
+/// Используются, например, при описании layout-а вершины.
+/// </summary>
 public enum GlDataType : uint
 {
     Float = 0x1406,
