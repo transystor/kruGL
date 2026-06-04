@@ -11,6 +11,14 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <PackageId>kruGL.OpenGL</PackageId>
+    <Description>Low-level OpenGL API wrapper for kruGL.</Description>
+    <PackageOutputPath>../artifacts/packages</PackageOutputPath>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\README.md" Pack="true" PackagePath="\" Link="README.md" />
+  </ItemGroup>
 
 </Project>

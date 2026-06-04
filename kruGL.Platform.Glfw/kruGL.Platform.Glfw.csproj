@@ -14,7 +14,16 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <PackageId>kruGL.Platform.Glfw</PackageId>
+    <Description>GLFW-based platform implementation for kruGL.</Description>
+    <PackageOutputPath>../artifacts/packages</PackageOutputPath>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\README.md" Pack="true" PackagePath="\" Link="README.md" />
+    <None Include="..\native\windows\x64\glfw.dll" Pack="true" PackagePath="runtimes/win-x64/native" Condition="Exists('..\native\windows\x64\glfw.dll')" />
+  </ItemGroup>
 
   <Target Name="CopyLocalGlfwNativeDll" AfterTargets="Build">
     <PropertyGroup>

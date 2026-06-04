@@ -1,0 +1,16 @@
+<Project>
+  <PropertyGroup>
+    <Authors>Gennady Kruglov</Authors>
+    <Company>transystor</Company>
+    <RepositoryUrl>https://github.com/transystor/kruGL</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageProjectUrl>https://github.com/transystor/kruGL</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PackageTags>opengl;graphics;gamedev;windowing;glfw</PackageTags>
+    <Version>0.1.0-alpha.1</Version>
+  </PropertyGroup>
+</Project>

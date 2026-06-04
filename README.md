@@ -2,6 +2,36 @@
 
 Тонкая C#-библиотека для practical OpenGL-wrapper под нужды игры и связанных тулов.
 
+## NuGet / Packages
+
+Проекты подготовлены к упаковке как отдельные пакеты, в первую очередь для GitHub Packages:
+
+- `kruGL.Native`
+- `kruGL.OpenGL`
+- `kruGL.Platform`
+- `kruGL.Platform.Glfw`
+
+Локальная упаковка:
+
+```bash
+dotnet pack kruGL.Native/kruGL.Native.csproj -c Release
+dotnet pack kruGL.OpenGL/kruGL.OpenGL.csproj -c Release
+dotnet pack kruGL.Platform/kruGL.Platform.csproj -c Release
+dotnet pack kruGL.Platform.Glfw/kruGL.Platform.Glfw.csproj -c Release
+```
+
+Пакеты будут складываться в:
+
+```text
+artifacts/packages/
+```
+
+Для подключения GitHub Packages подготовлен пример файла:
+
+```text
+nuget.config.example
+```
+
 ## Принципы
 
 - не покрывать весь OpenGL API подряд
