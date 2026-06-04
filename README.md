@@ -16,7 +16,7 @@
 - `kruGL.Native` — загрузка native function pointers
 - `kruGL.OpenGL` — low-level OpenGL API surface
 - `kruGL.Platform` — platform abstractions
-- `kruGL.Platform.Glfw` — текущая backend-реализация окна и context bootstrap
+- `kruGL.Platform.Glfw` — текущая backend-реализация окна и context bootstrap через прямой GLFW .NET binding
 
 ## Текущий статус
 
@@ -44,5 +44,7 @@
 - достать адреса GL-функций из context
 
 При этом GLFW-специфика теперь вынесена из общего platform API, чтобы позже можно было допилить и подставить альтернативный backend без ломки верхнего слоя.
+
+Silk.NET из текущего backend слоя убран.
 
 В headless Linux окружении без доступной desktop platform/graphics session запуск окна может падать на инициализации GLFW. Сборка smoke-test host при этом проходит, а реальный runtime smoke-test нужно прогонять в desktop окружении.

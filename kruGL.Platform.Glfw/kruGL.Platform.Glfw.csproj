@@ -7,7 +7,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Silk.NET.Windowing" Version="2.22.0" />
+    <PackageReference Include="GLFW-Net" Version="3.3.1" />
   </ItemGroup>
 
   <PropertyGroup>
