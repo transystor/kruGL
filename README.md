@@ -2,61 +2,6 @@
 
 Тонкая C#-библиотека для practical OpenGL-wrapper под нужды игры и связанных тулов.
 
-## NuGet / Packages
-
-Проекты подготовлены к упаковке как отдельные пакеты, в первую очередь для GitHub Packages:
-
-- `kruGL.Abstractions`
-- `kruGL.Core`
-- `kruGL.Native`
-- `kruGL.OpenGL`
-- `kruGL.Platform`
-- `kruGL.Platform.Glfw`
-
-Локальная упаковка:
-
-```bash
-dotnet pack kruGL.Abstractions/kruGL.Abstractions.csproj -c Release
-dotnet pack kruGL.Core/kruGL.Core.csproj -c Release
-dotnet pack kruGL.Native/kruGL.Native.csproj -c Release
-dotnet pack kruGL.OpenGL/kruGL.OpenGL.csproj -c Release
-dotnet pack kruGL.Platform/kruGL.Platform.csproj -c Release
-dotnet pack kruGL.Platform.Glfw/kruGL.Platform.Glfw.csproj -c Release
-```
-
-Пакеты будут складываться в:
-
-```text
-artifacts/packages/
-```
-
-Для подключения GitHub Packages подготовлен пример файла:
-
-```text
-nuget.config.example
-```
-
-Для публикации добавлен GitHub Actions workflow:
-
-```text
-.github/workflows/publish-packages.yml
-```
-
-Он умеет:
-- собирать release-версии проектов
-- упаковывать NuGet packages
-- пушить их в GitHub Packages
-
-Запуск:
-- вручную через `workflow_dispatch`
-- или через git tag вида `v*`
-
-## Принципы
-
-- не покрывать весь OpenGL API подряд
-- расти от реальных use-case'ов игры
-- держать abstraction тонким
-- не смешивать graphics layer с game logic
 
 ## Текущая структура
 
@@ -71,10 +16,6 @@ nuget.config.example
 - `native/windows/x64/glfw.dll`
 
 Дальше project сам копирует этот файл в output рядом с исполняемыми бинарниками.
-
-## Текущий статус
-
-Сейчас это уже не просто пустой bootstrap: добавлен `kruGL.Native` с native function loader abstraction и заложен v0 API surface для low-level OpenGL wrapper в `kruGL.OpenGL`.
 
 ## V0 surface
 
@@ -92,16 +33,8 @@ nuget.config.example
 - `DrawArrays`
 
 ## Smoke test
-
-Добавлен `kruGL.TestHost`, который использует общий platform API библиотеки и текущую platform-реализацию `kruGL.Platform.Glfw`. Он уже умеет не только `Clear()`, но и первый минимальный triangle render path через shader + buffer + vertex array.
-
-Сейчас `kruGL` умеет не только low-level GL вызовы, но и через platform-слой:
 - создать окно
 - поднять GL context
 - достать адреса GL-функций из context
 
 При этом GLFW-специфика теперь вынесена из общего platform API, чтобы позже можно было допилить и подставить альтернативную platform-реализацию без ломки верхнего слоя.
-
-Silk.NET из текущего platform-слоя убран.
-
-В headless Linux окружении без доступной desktop platform/graphics session запуск окна может падать на инициализации GLFW. Сборка smoke-test host при этом проходит, а реальный runtime smoke-test нужно прогонять в desktop окружении.
